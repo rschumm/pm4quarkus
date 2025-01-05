@@ -14,7 +14,7 @@ public class ProposalResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String hello() {
-        return "Hello from Quarkus REST";
+        return "Salut à la zhaw de la part de Quarkus dans le TGV!";
     }
 
     @GET

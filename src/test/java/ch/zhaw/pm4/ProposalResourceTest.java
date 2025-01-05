@@ -15,7 +15,7 @@ class ProposalResourceTest {
           .when().get("/proposal")
           .then()
              .statusCode(200)
-             .body(is("Hello from Quarkus REST"));
+             .body(is("Salut à la zhaw de la part de Quarkus dans le TGV!"));
     }
 
 

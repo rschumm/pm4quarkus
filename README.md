@@ -1,19 +1,23 @@
 # helloquarkus - blueprint documentation 
 
-This is a «HelloWorld» Blueprint Project based on Quarkus. It covers following layers: 
-
+This is a «HelloWorld» Blueprint Project based on Quarkus.  
 To start in hot-code mode use 
 
     quarkus dev 
     mvn quarkus:dev 
 
+To run properly, it need a working Docker or Podman environment on the Development machine. (If not, you have to provide a PostgreSQL Database manually)
 
-
+The Project covers following layers: 
 
 ## PostgreSQL Database 
 
-This project uses Dev-Services for Databases in DEV mode. See:   
+This project uses Quarkus Dev-Services for Databases in DEV mode. 
+
+See:   
 https://quarkus.io/guides/databases-dev-services
+
+
 Production DB can be configured «normally» as described above.  
 This is inspired by and using [TestContainers](https://testcontainers.com). 
 
@@ -31,7 +35,7 @@ The Tests are run continously in DEV mode.
 
 
 
-# helloquarkus - generated documentation 
+# generated documentation 
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
