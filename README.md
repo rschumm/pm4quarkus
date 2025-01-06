@@ -1,43 +1,88 @@
-# helloquarkus - blueprint documentation 
+# helloquarkus - Blueprint Documentation 
 
-This is a «HelloWorld» Blueprint Project based on Quarkus.  
+This is a «HelloWorld» Blueprint Project based on [Quarkus](https://quarkus.io) used as a demonstration for PM4 at zhaw.   
+We use it here just because the author likes Quarkus 😉  
+
+It just shows a list of PM4 Project Proposals stored in a PostgreSQL Database. 
+
+Quarkus is an Open Source Java Framework for Cloud Native Applications sponsored by RedHat, which is designed to be fast, small and easy to use. It is a set of opinionated open source libraries and tools that are designed to work together. 
+
+## run DEV locally 
+
 To start in hot-code mode use 
 
     quarkus dev 
     mvn quarkus:dev 
 
-pressing `w` in dev mode opens the DevUI with the Endpoints and all sorts of other stuff, `r` will resume the continous integration tests. 
+(`quarkus` is the Quarkus command line tool which can be installed via your preferred package manager.)
+
+pressing 
+- `d` in dev mode opens the DevUI with the Endpoints and all sorts of other stuff (like Tests, installed Extensions, DB Connections, Config Parameters, Dependency Graph etc.)
+- `w` will open the Application in the Browser.
+- `r` will resume the continous integration tests. 
+- `q` will quit the App.
 
 To run properly, it need a working Docker or Podman environment on the Development machine. (If not, you have to provide a PostgreSQL Database manually)
 
-The Project covers following layers: 
 
-## PostgreSQL Database 
+## run PROD on cluster
 
-This project uses Quarkus Dev-Services for Databases in DEV mode. 
+tbc
+
+## Architecture / Demonstration Canvas 
+
+The Project covers and showes following layers: 
+
+
+| Stack | DEV (local) | PROD (on cluster) |
+|-------|-------------|-------------------|
+| Build | Maven | Maven |
+| Hot Reoload | Quarkus Dev-Mode | none |
+| Database | Quarkus Dev-Services (PostgreSQL Testcontainers) | PostgreSQL |
+| Test Data | `import.sql` (Hibernate) | flyway migration files |
+| Database DDL generation | Hibernate through Panaché | Hibernate through Panaché |
+| Persistence | Panaché | Panaché |
+| Integration Tests | RestAssured | RestAssured |
+| REST | Quarkus RESTEasy | Quarkus RESTEasy |
+
+
+Details see: 
+
+
+### PostgreSQL Database / Testcontainers
+
+DEV:  
+
+This project uses Quarkus Dev-Services for Databases in DEV mode.  
+This means, that a PostgreSQL Database is started in a Docker Container automatically during DEV mode. This happends «by convention», i.e. without any further configuration in the `application.properties` file.   
+Testcontainers is running a `ryuk` container to manage the lifecycle of the containers, so that they are removed after the tests are run. This does not always work as expected, so you might have to remove the containers manually.  
 
 See:   
 https://quarkus.io/guides/databases-dev-services
 
+Note: the current Database Connection parameters (the one running in a Container) can be looked up in the DevUI.  
+
+
+PROD:
 
 Production DB can be configured «normally» as described above.  
-This is inspired by and using [TestContainers](https://testcontainers.com). 
+This is inspired by and using [Testcontainers](https://testcontainers.com). 
 
-For Persistence, it uses a very Pragmatic Variant of Hibernate, Called Panaché. 
+### Panaché Persistence 
 
-## Integration Tests 
+For Persistence, it uses a very Pragmatic Variant of Hibernate, Called [Panaché](https://quarkus.io/guides/hibernate-orm-panache).  
 
-This Project Uses Restassured to run Integration Tests towards the Quarkus REST Endpoint (using the above metionned Testcontainers PostgreSQL Database).  
-The Tests are run continously in DEV mode.  
+Note: the Attributes of the Entity use `public` Java Variables - this is intentional, a feature of Panaché and not an anti-pattern!!  
+
+### Integration Tests 
+
+This Project Uses Restassured to run Integration Tests towards a fully running Quarkus REST Endpoint (using the above metionned Testcontainers PostgreSQL Database) and is not using any Mocks!   
+The Tests are run continously in DEV mode in the console and can also be watched in the DevUI.   
+
+Note: running `mvn test` will fail, as it also runs the Quarkus Integration Tests annotated with `@QuarkusIntegrationTest` , which are not configured to use the Testcontainers Database. This is a known issue of Quarkus.  
 
 
-
-
-
-
-
-
-# generated documentation 
+# Quarkus Generated Documentation (for infroamtion)
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
