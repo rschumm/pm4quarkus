@@ -40,6 +40,7 @@ public class ProposalResource {
     @Path("/ui")
     @Blocking
     @Operation(summary = "Render proposals template", description = "Displays the proposals page with all proposals.")
+    @Produces(MediaType.TEXT_HTML)
     public TemplateInstance getProposals() {
         List<Proposal> allProposals = Proposal.listAll(Sort.by("title"));
         return proposals.data("proposals", allProposals);
