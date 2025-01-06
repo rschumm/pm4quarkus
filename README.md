@@ -3,9 +3,9 @@
 This is a «HelloWorld» Blueprint Project based on [Quarkus](https://quarkus.io) used as a demonstration for PM4 at zhaw.   
 We use it here just because the author likes Quarkus 😉  
 
-It just shows a list of PM4 Project Proposals stored in a PostgreSQL Database. 
+The App just shows a list of PM4 Project Proposals stored in a PostgreSQL Database. 
 
-Quarkus is an Open Source Java Framework for Cloud Native Applications sponsored by RedHat, which is designed to be fast, small and easy to use. It is a set of opinionated open source libraries and tools that are designed to work together. 
+Quarkus is an Open Source Java Framework for Cloud Native Applications sponsored by RedHat, which is designed to be fast, small and easy to use. It is a set of opinionated open source libraries and tools that are designed to work together. One of the additional key features is the ability to compile Java applications to native executables using [GraalVM](https://www.graalvm.org) - which is not used in this Project.  
 
 ## run DEV locally 
 
@@ -17,7 +17,7 @@ To start in hot-code mode use
 (`quarkus` is the Quarkus command line tool which can be installed via your preferred package manager.)
 
 pressing 
-- `d` in dev mode opens the DevUI with the Endpoints and all sorts of other stuff (like Tests, installed Extensions, DB Connections, Config Parameters, Dependency Graph etc.)
+- `d` in dev mode opens the DevUI with the Endpoints and all sorts of other stuff (like Tests, installed Extensions, OpenAPI GUI (aka Swagger), DB Connections, Config Parameters, Dependency Graph etc.)
 - `w` will open the Application in the Browser.
 - `r` will resume the continous integration tests. 
 - `q` will quit the App.
@@ -54,8 +54,9 @@ Details see:
 DEV:  
 
 This project uses Quarkus Dev-Services for Databases in DEV mode.  
-This means, that a PostgreSQL Database is started in a Docker Container automatically during DEV mode. This happends «by convention», i.e. without any further configuration in the `application.properties` file.   
-Testcontainers is running a `ryuk` container to manage the lifecycle of the containers, so that they are removed after the tests are run. This does not always work as expected, so you might have to remove the containers manually.  
+A PostgreSQL Database is started in a Docker Container automatically during DEV mode - using [Testcontainers](https://testcontainers.com) in the background.   
+This happends «by convention», i.e. without any further configuration in the `application.properties` file.   
+Testcontainers is running a `ryuk` container to manage the lifecycle of the containers, so that they are removed after the tests are run. This does not always work as expected, so you might have to remove the containers manually and clean up with `podman system prune -a --volumes` carefully. 
 
 See:   
 https://quarkus.io/guides/databases-dev-services
@@ -66,11 +67,10 @@ Note: the current Database Connection parameters (the one running in a Container
 PROD:
 
 Production DB can be configured «normally» as described above.  
-This is inspired by and using [Testcontainers](https://testcontainers.com). 
 
 ### Panaché Persistence 
 
-For Persistence, it uses a very Pragmatic Variant of Hibernate, Called [Panaché](https://quarkus.io/guides/hibernate-orm-panache).  
+For Persistence, it uses a very pragmatic variant of Hibernate, called [Panaché](https://quarkus.io/guides/hibernate-orm-panache).  
 
 Note: the Attributes of the Entity use `public` Java Variables - this is intentional, a feature of Panaché and not an anti-pattern!!  
 
