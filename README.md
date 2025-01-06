@@ -82,7 +82,16 @@ The Tests are run continously in DEV mode in the console and can also be watched
 Note: running `mvn test` will fail, as it also runs the Quarkus Integration Tests annotated with `@QuarkusIntegrationTest` , which are not configured to use the Testcontainers Database. This is a known issue of Quarkus.  
 
 
-# Quarkus Generated Documentation (for infroamtion)
+### Web Frontend
+
+To add own static web content see [Quarkus HTTP](https://quarkus.io/guides/http-reference) and [Quarkus Web](https://quarkus.io/guides/web). The default welcome page will then disappear. 
+
+The Application serves a very simple HTML Page with a list of PM4 Project Proposals based on the [Quarkus Qute Templating Engine](https://quarkus.io/guides/qute#qute-reference-guide). The Web Page is served by the Quarkus REST Endpoint just like the JSON Data. 
+
+
+
+
+# 🏗️ Quarkus Generated Documentation (for infroamtion)
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 

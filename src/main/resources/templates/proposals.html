@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Proposals</title>
+    <style>
+      body {
+        background-color: #0064a6;
+        color: white;
+        font-family: HelveticaNeue,Helvetica,Arial,sans-serif
+      }
+    </style>
+</head>
+<body>
+    <h1>Proposals</h1>
+    <ul>
+        {#each proposals}
+            <li>{it_count} - <b>{it.title}</b>: {it.subtitle}</li>
+        {/each}
+    </ul>
+</body>
+</html>
