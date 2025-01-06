@@ -6,6 +6,8 @@ To start in hot-code mode use
     quarkus dev 
     mvn quarkus:dev 
 
+pressing `w` in dev mode opens the DevUI with the Endpoints and all sorts of other stuff, `r` will resume the continous integration tests. 
+
 To run properly, it need a working Docker or Podman environment on the Development machine. (If not, you have to provide a PostgreSQL Database manually)
 
 The Project covers following layers: 

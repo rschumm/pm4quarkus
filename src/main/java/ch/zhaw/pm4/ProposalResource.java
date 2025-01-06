@@ -2,7 +2,7 @@ package ch.zhaw.pm4;
 
 import java.util.List;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.panache.common.Sort;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -21,6 +21,6 @@ public class ProposalResource {
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Proposal> getAllProposals() {
-        return Proposal.listAll();
+        return Proposal.listAll(Sort.by("title"));
     }
 }

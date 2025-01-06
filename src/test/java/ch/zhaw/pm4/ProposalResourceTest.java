@@ -20,12 +20,21 @@ class ProposalResourceTest {
 
 
     @Test
-    void testListAll() {
+    void testListAllSize() {
         given()
           .when().get("/proposal/all")
           .then()
              .statusCode(200)
-             .body("$", hasSize(0));
+             .body("$", hasSize(2));
+    }
+
+    @Test
+    void testFirstEntityTitle() {
+        given()
+          .when().get("/proposal/all")
+          .then()
+             .statusCode(200)
+             .body("[0].title", is("Herbal Garden Cat Protector"));
     }
       
     

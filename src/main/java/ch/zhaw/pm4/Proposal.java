@@ -25,7 +25,8 @@ import jakarta.persistence.Entity;
  */
 @Entity
 public class Proposal extends PanacheEntity {
+
     public String title;
-    public String description;
+    public String subtitle;
     public String author;
 }
