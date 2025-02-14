@@ -1,6 +1,8 @@
 package ch.zhaw.pm4;
 
 import io.quarkus.test.junit.QuarkusTest;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -10,6 +12,7 @@ import static org.hamcrest.Matchers.hasSize;
 @QuarkusTest
 class ProposalResourceTest {
     @Test
+    @DisplayName("The Hello World endpoint")
     void testHelloEndpoint() {
         given()
           .when().get("/proposal")
@@ -29,6 +32,7 @@ class ProposalResourceTest {
     }
 
     @Test
+    @DisplayName("First Proposal entity title")
     void testFirstEntityTitle() {
         given()
           .when().get("/proposal/all")

@@ -55,7 +55,7 @@ DEV:
 
 This project uses Quarkus Dev-Services for Databases in DEV mode.  
 A PostgreSQL Database is started in a Docker Container automatically during DEV mode - using [Testcontainers](https://testcontainers.com) in the background.   
-This happends «by convention», i.e. without any further configuration in the `application.properties` file.   
+This happends «by convention», i.e. without any further configuration in the `application.properties` file. The System knows that it should start a PostgreSQL Database in a Container, because the Project uses the `quarkus-jdbc-postgresql` Extension.   
 Testcontainers is running a `ryuk` container to manage the lifecycle of the containers, so that they are removed after the tests are run. This does not always work as expected, so you might have to remove the containers manually and clean up with `podman system prune -a --volumes` carefully. 
 
 See:   
