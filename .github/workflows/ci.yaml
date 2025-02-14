@@ -13,25 +13,33 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Set up JDK 
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v3
       with:
         java-version: '23'
         distribution: 'temurin' 
 
     - name: Set up Docker
-      uses: docker/setup-buildx-action@v1
+      uses: docker/setup-buildx-action@v2
 
     - name: Run tests with Maven
       run: mvn test
 
-    - name: Generate test reports
-      run: mvn surefire-report:report
-
-    - name: Upload test reports
+    - name: Upload test reports (artifact)
       uses: actions/upload-artifact@v4
       with:
         name: test-reports
         path: target/surefire-reports/*.xml
+
+    - name: Publish Test Results
+      uses: actions/upload-test-report@v2
+      with:
+        name: JUnit Results
+        path: target/surefire-reports/*.xml
+
+    - name: Test Report Summary (PR Annotations)
+      uses: test-summary/action@v2
+      with:
+        paths: target/surefire-reports/*.xml
