@@ -27,19 +27,4 @@ jobs:
     - name: Run tests with Maven
       run: mvn test
 
-    - name: Upload test reports (artifact)
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-reports
-        path: target/surefire-reports/*.xml
 
-    - name: Publish Test Results
-      uses: actions/upload-test-report@v2
-      with:
-        name: JUnit Results
-        path: target/surefire-reports/*.xml
-
-    - name: Test Report Summary (PR Annotations)
-      uses: test-summary/action@v2
-      with:
-        paths: target/surefire-reports/*.xml
