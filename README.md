@@ -25,25 +25,40 @@ pressing
 To run properly, it need a working Docker or Podman environment on the Development machine. (If not, you have to provide a PostgreSQL Database manually)
 
 
-## run PROD on cluster
+## run CI on GitHub Actions
 
-tbc
+Run the Action `CI for Quarkus Proposals App` by pushing to the Repository `main` branch. The Pipeline is defined in `.github/workflows/ci.yml` and will: 
+- build the App
+- run the Tests (including Integration Tests that use a PostgreSQL Database in a Testcontainer - this will be automatically started by the Testcontainers Library)
+- create a Docker Image
+- push the Docker Image to the GitHub Container Registry
+
+
+
+## deploy PROD on cluster
+
+rancher login {rancher_server_url} -t {api_token}
+
+
+
 
 ## Architecture / Demonstration Canvas 
 
 The Project covers and showes following layers: 
 
 
-| Stack | DEV (local) | PROD (on cluster) |
-|-------|-------------|-------------------|
-| Build | Maven | Maven |
-| Hot Reoload | Quarkus Dev-Mode | none |
-| Database | Quarkus Dev-Services (PostgreSQL Testcontainers) | PostgreSQL |
-| Test Data | `import.sql` (Hibernate) | flyway migration files |
-| Database DDL generation | Hibernate through Panaché | Hibernate through Panaché |
-| Persistence | Panaché | Panaché |
-| Integration Tests | RestAssured | RestAssured |
-| REST | Quarkus RESTEasy | Quarkus RESTEasy |
+| Stack | DEV (local) | Build and Test (on gitlab) | PROD (on cluster) |
+|-------|-------------|-------------------|---|
+| Build | Maven | Maven  | none |
+| Operations | Quarkus Dev-Mode | `mvn package`, `docker build` | k8s Pods by ArgoCD |
+| Hot Reoload | Quarkus Dev-Mode | none | none |
+| Database | Quarkus Dev-Services (PostgreSQL Testcontainers) | Quarkus Dev-Services (PostgreSQL Testcontainers) | PostgreSQL on k8s |
+| Test Data | `import.sql` (Hibernate) | `import.sql` (Hibernate)  | flyway migration files |
+| Database DDL generation | Hibernate through Panaché | Hibernate through Panaché | Hibernate through Panaché |
+| Persistence | Panaché | Panaché | Panaché |
+| Integration Tests | RestAssured | RestAssured | none |
+| REST | Quarkus RESTEasy | Quarkus RESTEasy | Quarkus RESTEasy |
+| Web Frontend | Quarkus Qute | Quarkus Qute | Quarkus Qute |
 
 
 Details see: 
@@ -67,6 +82,7 @@ Note: the current Database Connection parameters (the one running in a Container
 PROD:
 
 Production DB can be configured «normally» as described above.  
+In Production, the Database is provided by the Kubernetes Cluster in «normal» way in a Pod. See the folder `operations`. 
 
 ### Panaché Persistence 
 
@@ -79,7 +95,7 @@ Note: the Attributes of the Entity use `public` Java Variables - this is intenti
 This Project Uses Restassured to run Integration Tests towards a fully running Quarkus REST Endpoint (using the above metionned Testcontainers PostgreSQL Database) and is not using any Mocks!   
 The Tests are run continously in DEV mode in the console and can also be watched in the DevUI.   
 
-Note: running `mvn test` will fail, as it also runs the Quarkus Integration Tests annotated with `@QuarkusIntegrationTest` , which are not configured to use the Testcontainers Database. This is a known issue of Quarkus.  
+Note: Running the *IT Tests in die IDE might fail, because the IDE does not know about the Testcontainers and the running PostgreSQL Database. Unsing `mvn test` will work.
 
 
 ### Web Frontend
