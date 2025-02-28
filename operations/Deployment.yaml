@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloquarkus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: helloquarkus
+  template:
+    metadata:
+      labels:
+        app: helloquarkus
+    spec:
+      containers:
+      - name: helloquarkus
+        image: ghcr.io/rschumm/pm4quarkus/helloquarkus:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: QUARKUS_DATASOURCE_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: database-configmap
+              key: quarkus.datasource.username
+        - name: QUARKUS_DATASOURCE_JDBC_URL
+          valueFrom:
+            configMapKeyRef:
+              name: database-configmap
+              key: quarkus.datasource.jdbc.url
+        - name: QUARKUS_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: database-secret
+              key: quarkus.datasource.password
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: database-configmap
+data:
+  quarkus.datasource.username: pm4
+  quarkus.datasource.jdbc.url: jdbc:postgresql://postgresql-service:5432/pm4?ApplicationName=PM4 Hallo
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: database-secret
+type: Opaque
+data:
+  quarkus.datasource.password: YWlzdXJmZ2gzNDk4N3Ro
