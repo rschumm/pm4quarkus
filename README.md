@@ -84,7 +84,12 @@ Note: running `mvn test` will fail, as it also runs the Quarkus Integration Test
 
 ### Web Frontend
 
-To add own static web content see [Quarkus HTTP](https://quarkus.io/guides/http-reference) and [Quarkus Web](https://quarkus.io/guides/web). The default welcome page will then disappear. 
+To add own static web content see [Quarkus HTTP](https://quarkus.io/guides/http-reference) and [Quarkus Web](https://quarkus.io/guides/web). 
+
+- The Qute Web extension allows you to directly serve via HTTP templates located in src/main/resources/templates/pub/. In that case you don’t need any Java code to "plug" the template, for example, the template src/main/resources/templates/pub/foo.html will be served from the paths /foo and /foo.html by default.
+- For finer control, you can combine it with Quarkus REST to control how your template will be served. All files located in the src/main/resources/templates directory and its subdirectories are registered as templates and can be injected in a REST resource.
+
+The default welcome page will then disappear when you add your own index.html file or so. 
 
 The Application serves a very simple HTML Page with a list of PM4 Project Proposals based on the [Quarkus Qute Templating Engine](https://quarkus.io/guides/qute#qute-reference-guide). The Web Page is served by the Quarkus REST Endpoint just like the JSON Data. 
 
