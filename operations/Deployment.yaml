@@ -33,3 +33,17 @@ spec:
             secretKeyRef:
               name: database-secret
               key: quarkus.datasource.password
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloquarkus-service
+spec:
+  selector:
+    app: helloquarkus
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: ClusterIP
