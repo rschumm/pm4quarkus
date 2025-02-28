@@ -76,7 +76,7 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ secrets.PM4_REGISTRY }}
 
     - name: PM4 Build and push Docker image
       run: |
