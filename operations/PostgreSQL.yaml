@@ -43,11 +43,17 @@ spec:
         image: postgres:17.4
         env:
         - name: POSTGRES_USER
-          value: user
+          valueFrom:
+            configMapKeyRef:
+              name: database-configmap
+              key: quarkus.datasource.username
         - name: POSTGRES_PASSWORD
-          value: pass
+          valueFrom:
+            secretKeyRef:
+              name: database-secret
+              key: quarkus.datasource.password
         - name: POSTGRES_DB
-          value: mydb
+          value: pm4
         ports:
         - containerPort: 5432
         volumeMounts:
