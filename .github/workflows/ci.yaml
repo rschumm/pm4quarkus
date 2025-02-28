@@ -56,27 +56,27 @@ jobs:
     needs: build-and-test
 
     steps:
-    - name: Download build artifacts
+    - name: PM4 Download build artifacts
       uses: actions/download-artifact@v4
       with:
         name: build-artifacts
 
-    - name: Download Dockerfiles
+    - name: PM4 Download Dockerfiles
       uses: actions/download-artifact@v4
       with:
         name: dockerfiles
 
-    - name: Set up Docker Build
+    - name: PM4 Set up Docker Build
       uses: docker/setup-buildx-action@v2
 
-    - name: Log in to GitHub Container Registry
+    - name: PM4 Log in to GitHub Container Registry
       uses: docker/login-action@v2
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build and push Docker image
+    - name: PM4 Build and push Docker image
       run: |
         docker build -f src/main/docker/Dockerfile.jvm -t ghcr.io/${{ github.repository }}/helloquarkus:latest .
         docker push ghcr.io/${{ github.repository }}/helloquarkus:latest
