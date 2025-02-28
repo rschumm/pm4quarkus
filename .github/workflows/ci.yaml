@@ -8,24 +8,24 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: PM4 Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up JDK 
+    - name: PM4 Set up JDK 
       uses: actions/setup-java@v3
       with:
         java-version: '23'
         distribution: 'temurin' 
         cache: 'maven'
 
-    - name: Set up Docker Buildx
+    - name: PM4 Set up Docker Build
       uses: docker/setup-buildx-action@v2
 
-    - name: Cache Docker layers
+    - name: PM4 Cache Docker layers
       uses: actions/cache@v3
       with:
         path: /var/lib/docker
@@ -33,10 +33,10 @@ jobs:
         restore-keys: |
           docker-cache-${{ runner.os }}-
 
-    - name: Enable Testcontainers Reuse
+    - name: PM4 Enable Testcontainers Reuse
       run: echo "testcontainers.reuse.enable=true" > ~/.testcontainers.properties
 
-    - name: Run tests with Maven
+    - name: PM4 Run tests with Maven
       run: mvn test
 
 
