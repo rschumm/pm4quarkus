@@ -33,6 +33,10 @@ spec:
             secretKeyRef:
               name: database-secret
               key: quarkus.datasource.password
+        - name: QUARKUS_HIBERNATE_ORM_DATABASE_GENERATION
+          value: update
+        - name: QUARKUS_HIBERNATE_ORM_SQL_LOAD_SCRIPT
+          value: import.sql
 
 ---
 apiVersion: v1

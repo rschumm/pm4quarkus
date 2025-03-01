@@ -7,5 +7,7 @@
 
 insert into Proposal (id, title, subtitle, author) values 
 (1, 'Herbal Garden Cat Protector', 'In this project we want to build an animal friendly protection system, that chases cats from the garden with a water gun', 'Engeli'), 
-(2, 'Personal Time-Assistant für ADHS Betroffene', 'Leute mit ADHS haben oft Probleme, an all die Kleinen Dinge zu denken, die es im Alltag zu tun gibt', 'Langhard-Renold');
+(2, 'Personal Time-Assistant für ADHS Betroffene', 'Leute mit ADHS haben oft Probleme, an all die Kleinen Dinge zu denken, die es im Alltag zu tun gibt', 'Langhard-Renold'),
+(3, 'Techologie Radar', 'Wir wollen ein Tool entwickeln, das die neusten Technologien aufzeigt und bewertet', 'scmy'),
+(4, 'StudyConnect', 'Platfform für Lern- und Projektgruppen', 'martiad3'); 
  
