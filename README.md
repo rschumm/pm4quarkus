@@ -7,41 +7,6 @@ The App just shows a list of PM4 Project Proposals stored in a PostgreSQL Databa
 
 Quarkus is an Open Source Java Framework for Cloud Native Applications sponsored by RedHat, which is designed to be fast, small and easy to use. It is a set of opinionated open source libraries and tools that are designed to work together. One of the additional key features is the ability to compile Java applications to native executables using [GraalVM](https://www.graalvm.org) - which is not used in this Project.  
 
-## run DEV locally 
-
-To start in hot-code mode use 
-
-    quarkus dev 
-    mvn quarkus:dev 
-
-(`quarkus` is the Quarkus command line tool which can be installed via your preferred package manager.)
-
-pressing 
-- `d` in dev mode opens the DevUI with the Endpoints and all sorts of other stuff (like Tests, installed Extensions, OpenAPI GUI (aka Swagger), DB Connections, Config Parameters, Dependency Graph etc.)
-- `w` will open the Application in the Browser.
-- `r` will resume the continous integration tests. 
-- `q` will quit the App.
-
-To run properly, it need a working Docker or Podman environment on the Development machine. (If not, you have to provide a PostgreSQL Database manually)
-
-
-## run CI on GitHub Actions
-
-Run the Action `CI for Quarkus Proposals App` by pushing to the Repository `main` branch. The Pipeline is defined in `.github/workflows/ci.yml` and will: 
-- build the App
-- run the Tests (including Integration Tests that use a PostgreSQL Database in a Testcontainer - this will be automatically started by the Testcontainers Library)
-- create a Docker Image
-- push the Docker Image to the GitHub Container Registry
-
-
-
-## deploy PROD on cluster
-
-rancher login {rancher_server_url} -t {api_token}
-
-
-
-
 ## Architecture / Demonstration Canvas 
 
 The Project covers and showes following layers: 
@@ -61,8 +26,87 @@ The Project covers and showes following layers:
 | Web Frontend | Quarkus Qute | Quarkus Qute | Quarkus Qute |
 
 
-Details see: 
+Architecture Details see below.
 
+
+# Run
+
+## run DEV locally 
+
+To start in hot-code mode use 
+
+    quarkus dev 
+    mvn quarkus:dev 
+
+(`quarkus` is the Quarkus command line tool which can be installed via your preferred package manager.)
+
+To run properly, it need a working Docker or Podman environment on the Development machine. (If not, you have to provide a PostgreSQL Database manually)
+
+pressing 
+- `d` in dev mode opens the DevUI with the Endpoints and all sorts of other stuff (like Continous Tests, installed Extensions, OpenAPI GUI (aka Swagger), DB Connections, Config Parameters, Dependency Graph etc.)
+- `w` will open the Application in the Browser.
+- `r` will resume the continous integration tests. 
+- `q` will quit the App.
+
+Note: Quarkus will run Tests continously - Saving a File will trigger the Tests to run again and immediately show the results in the Console and the DevUI: 
+
+![Quarkus DevUI](docu/q-dev.png)
+
+
+## run CI on GitHub Actions
+
+Run the Action `CI for Quarkus Proposals App` by pushing to the Repository `main` branch. The Pipeline is defined in `.github/workflows/ci.yml` and will: 
+- build the App
+- run the Tests (including Integration Tests that use a PostgreSQL Database in a Testcontainer - this will be automatically started by the Testcontainers Library)
+- create a Docker Image
+- push the Docker Image to the GitHub Container Registry
+
+The Pipelin in GitHub Actions View: 
+
+Note: This only work in the pulblic GitHub. ZHAW GitHub will need some additional configuration.
+
+![GitHub Actions Pipeline](docu/gh-pipe.png)
+
+
+The Docker Image in the GitHub Container Registry:
+
+Note: This only work in the pulblic GitHub. ZHAW GitHub will not support GHCR.
+
+![GitHub Container Registry](docu/gh-cr.png)
+
+
+## deploy PROD on cluster
+
+### Manual Deployment
+
+The Application can be deployed to the Rancher / k3s Cluster manually by applying the Kubernetes Resources in the `operations` folder. 
+
+This will trigger all the Services and Deployments in the Cluster. 
+
+Viw of the Deployments in Rancher, showing the Quarkus App and the PostgreSQL Database running luckly: 
+
+![Rancher Deployments UI](docu/r-d.png)
+
+The Application can be accessed via the URL configured in the `Ingress` Resource. This is backed by an outomated [Traefik](https://traefik.io/traefik/) Ingress Controller that handles Reverse Proxying and SSL Termination. 
+
+
+### Automated Deployment with ArgoCD
+
+Additionally, the Application can be deployed to the Rancher / k3s Cluster automatically by using [ArgoCD](https://argoproj.github.io/cd/).  
+For this, ArgoCD will watch the GitHub Repository and apply the Kubernetes Resources in the `operations` folder automatically to the Cluster.   
+Ask the Teaching Assistant for ArgoCD Access.  
+
+The monitored Appliation in ArgoCD will look like this:
+
+![ArgoCD Tree](docu/ar-tree.png)
+
+ArgoCD can also visualise a simplifed Networking View: 
+
+![ArgoCD Network](docu/ar-nw.png)
+
+rancher login {rancher_server_url} -t {api_token}
+
+# Architecture Details
 
 ### PostgreSQL Database / Testcontainers
 
