@@ -59,7 +59,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: pm4.init-lab.ch
+    - host: scmy.pm4.init-lab.ch
       http:
         paths:
           - backend:
