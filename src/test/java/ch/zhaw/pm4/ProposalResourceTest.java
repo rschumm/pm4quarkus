@@ -28,7 +28,7 @@ class ProposalResourceTest {
           .when().get("/proposal/all")
           .then()
              .statusCode(200)
-             .body("$", hasSize(2));
+             .body("$", hasSize(4));
     }
 
     @Test
