@@ -41,13 +41,13 @@ spec:
               key: quarkus.datasource.password
         - name: POSTGRES_DB
           value: pm4
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
         ports:
         - containerPort: 5432
         volumeMounts:
-        - mountPath: /var/lib/postgresql/data/pgdata
+        - mountPath: /var/lib/postgresql/data/
           name: postgresql-storage
-        - name: PGDATA
-          value: /var/lib/postgresql/data/pgdata
       volumes:
       - name: postgresql-storage
         persistentVolumeClaim:
