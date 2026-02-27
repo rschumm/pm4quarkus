@@ -7,6 +7,12 @@ The App just shows a list of PM4 Project Proposals stored in a PostgreSQL Databa
 
 Quarkus is an Open Source Java Framework for Cloud Native Applications sponsored by RedHat, which is designed to be fast, small and easy to use. It is a set of opinionated open source libraries and tools that are designed to work together. One of the additional key features is the ability to compile Java applications to native executables using [GraalVM](https://www.graalvm.org) - which is not used in this Project.  
 
+
+> [!CAUTION]  
+> for the author @scmy: 
+> two git remotest for building purpose: `origin, public` publish on both. 
+
+
 ## Architecture / Demonstration Canvas 
 
 The Project covers and showes following layers: 
@@ -15,14 +21,14 @@ The Project covers and showes following layers:
 | Stack | DEV (local) | Build and Test (on gitlab) | PROD (on cluster) |
 |-------|-------------|-------------------|---|
 | Build | Maven | Maven  | none |
-| Operations | Quarkus Dev-Mode | `mvn package`, `docker build` | k8s Pods by ArgoCD |
-| Hot Reoload | Quarkus Dev-Mode | none | none |
+| Operations | Quarkus Dev-Mode `quarkus dev`| `mvn package`, `docker build` | k8s Pods by ArgoCD |
+| Hot Reoload | Quarkus Dev-Mode `quarkus dev | none | none |
 | Database | Quarkus Dev-Services (PostgreSQL Testcontainers) | Quarkus Dev-Services (PostgreSQL Testcontainers) | PostgreSQL on k8s |
 | Test Data | `import.sql` (Hibernate) | `import.sql` (Hibernate)  | flyway migration files |
 | Database DDL generation | Hibernate through Panaché | Hibernate through Panaché | Hibernate through Panaché |
 | Persistence | Panaché | Panaché | Panaché |
 | Integration Tests | RestAssured | RestAssured | none |
-| REST | Quarkus RESTEasy | Quarkus RESTEasy | Quarkus RESTEasy |
+| REST | Quarkus Jakarta REST | Quarkus Jakarta REST | Quarkus Jakarta REST |
 | Web Frontend | Quarkus Qute | Quarkus Qute | Quarkus Qute |
 
 
@@ -40,7 +46,8 @@ To start in hot-code mode use
 
 (`quarkus` is the Quarkus command line tool which can be installed via your preferred package manager.)
 
-To run properly, it need a working Docker or Podman environment on the Development machine. (If not, you have to provide a PostgreSQL Database manually)
+> [!IMPORTANT]  
+> To run properly, it need a working Docker or Podman environment on the Development machine. Quarkus Dev Services will **automaticall run** and provide a **PostgreSQL** database in a container.  (If you don't have a container runtime on your machine, you have to provide a PostgreSQL Database manually and configure it in the `application.properties` file.)
 
 pressing 
 - `d` in dev mode opens the DevUI with the Endpoints and all sorts of other stuff (like Continous Tests, installed Extensions, OpenAPI GUI (aka Swagger), DB Connections, Config Parameters, Dependency Graph etc.)
@@ -61,21 +68,30 @@ Run the Action `CI for Quarkus Proposals App` by pushing to the Repository `main
 - create a Docker Image
 - push the Docker Image to the GitHub Container Registry
 
-The Pipelin in GitHub Actions View: 
+The Pipeline in GitHub Actions View: 
 
-Note: This only work in the pulblic GitHub. ZHAW GitHub will need some additional configuration.
+> [!CAUTION]  
+> This only work in the pulblic GitHub. ZHAW GitHub will need some additional configuration.
 
 ![GitHub Actions Pipeline](docu/gh-pipe.png)
 
 
 The Docker Image in the GitHub Container Registry:
 
-Note: This only work in the pulblic GitHub. ZHAW GitHub will not support GHCR.
+> [!CAUTION]  
+> This only work in the pulblic GitHub. ZHAW GitHub will not support GHCR.
+
 
 ![GitHub Container Registry](docu/gh-cr.png)
 
 
 ## deploy PROD on cluster
+
+To get a Cluster Access token on your local commandline (including [k9s](https://k9scli.io)): 
+
+    rancher login {rancher_server_url} -t {api_token}
+
+
 
 ### Manual Deployment
 
@@ -104,7 +120,7 @@ ArgoCD can also visualise a simplifed Networking View:
 
 ![ArgoCD Network](docu/ar-nw.png)
 
-rancher login {rancher_server_url} -t {api_token}
+
 
 # Architecture Details
 
@@ -136,20 +152,20 @@ Note: the Attributes of the Entity use `public` Java Variables - this is intenti
 
 ### Integration Tests 
 
-This Project Uses Restassured to run Integration Tests towards a fully running Quarkus REST Endpoint (using the above metionned Testcontainers PostgreSQL Database) and is not using any Mocks!   
+This Project Uses **[Restassured](https://rest-assured.io)** to run Integration Tests towards a **fully running Quarkus REST Endpoint** (using the above metionned Testcontainers PostgreSQL Database) and is not using any Mocks!   
 The Tests are run continously in DEV mode in the console and can also be watched in the DevUI.   
 
-Note: Running the *IT Tests in die IDE might fail, because the IDE does not know about the Testcontainers and the running PostgreSQL Database. Unsing `mvn test` will work.
+Note: Running the `*IT` Tests in die IDE might fail, because the IDE does not know about the Testcontainers and the running PostgreSQL Database. Unsing `mvn test` will work.
 
 
 ### Web Frontend
 
 To add own static web content see [Quarkus HTTP](https://quarkus.io/guides/http-reference) and [Quarkus Web](https://quarkus.io/guides/web). 
 
-- The Qute Web extension allows you to directly serve via HTTP templates located in src/main/resources/templates/pub/. In that case you don’t need any Java code to "plug" the template, for example, the template src/main/resources/templates/pub/foo.html will be served from the paths /foo and /foo.html by default.
-- For finer control, you can combine it with Quarkus REST to control how your template will be served. All files located in the src/main/resources/templates directory and its subdirectories are registered as templates and can be injected in a REST resource.
+- The Qute Web extension allows you to directly serve via HTTP templates located in `src/main/resources/templates/pub/`. In that case you don’t need any Java code to "plug" the template, for example, the template `src/main/resources/templates/pub/foo.html` will be served from the paths /foo and /foo.html by default.
+- For finer control, you can combine it with Quarkus REST to control how your template will be served. All files located in the `src/main/resources/templates` directory and its subdirectories are registered as templates and can be injected in a REST resource.
 
-The default welcome page will then disappear when you add your own index.html file or so. 
+The default welcome page will then disappear when you add your own `index.html` file or so. 
 
 The Application serves a very simple HTML Page with a list of PM4 Project Proposals based on the [Quarkus Qute Templating Engine](https://quarkus.io/guides/qute#qute-reference-guide). The Web Page is served by the Quarkus REST Endpoint just like the JSON Data. 
 
