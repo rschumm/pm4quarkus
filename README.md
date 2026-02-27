@@ -9,8 +9,8 @@ Quarkus is an Open Source Java Framework for Cloud Native Applications sponsored
 
 
 > [!CAUTION]  
-> for the author @scmy: 
-> two git remotest for building purpose: `origin, public` publish on both. 
+> for the author @scmy:  
+> two git remotes for building purpose: `origin, public` - on upgrade publish on both. 
 
 
 ## Architecture / Demonstration Canvas 
@@ -57,7 +57,13 @@ pressing
 
 Note: Quarkus will run Tests continously - Saving a File will trigger the Tests to run again and immediately show the results in the Console and the DevUI: 
 
+On localhost, the Main View is served on [the Endpoint `/proposal/ui`](http://localhost:8085/proposal/ui) 
+
+
 ![Quarkus DevUI](docu/q-dev.png)
+
+
+Note: to just test the application run `quarkus test` 
 
 
 ## run CI on GitHub Actions
@@ -71,7 +77,7 @@ Run the Action `CI for Quarkus Proposals App` by pushing to the Repository `main
 The Pipeline in GitHub Actions View: 
 
 > [!CAUTION]  
-> This only work in the pulblic GitHub. ZHAW GitHub will need some additional configuration.
+> This only works in the pulblic GitHub. ZHAW GitHub will need some additional configuration.
 
 ![GitHub Actions Pipeline](docu/gh-pipe.png)
 
@@ -79,7 +85,7 @@ The Pipeline in GitHub Actions View:
 The Docker Image in the GitHub Container Registry:
 
 > [!CAUTION]  
-> This only work in the pulblic GitHub. ZHAW GitHub will not support GHCR.
+> This only works in the pulblic GitHub. ZHAW GitHub will not support GHCR.
 
 
 ![GitHub Container Registry](docu/gh-cr.png)
@@ -136,7 +142,9 @@ Testcontainers is running a `ryuk` container to manage the lifecycle of the cont
 See:   
 https://quarkus.io/guides/databases-dev-services
 
-Note: the current Database Connection parameters (the one running in a Container) can be looked up in the DevUI.  
+
+> [!TIP]  
+> the current Database Connection parameters (the one running in a Container) can be looked up in the DevUI.  
 
 
 PROD:
@@ -168,6 +176,8 @@ To add own static web content see [Quarkus HTTP](https://quarkus.io/guides/http-
 The default welcome page will then disappear when you add your own `index.html` file or so. 
 
 The Application serves a very simple HTML Page with a list of PM4 Project Proposals based on the [Quarkus Qute Templating Engine](https://quarkus.io/guides/qute#qute-reference-guide). The Web Page is served by the Quarkus REST Endpoint just like the JSON Data. 
+
+On localhost, the Main View is served on [the Endpoint `/proposal/ui`](http://localhost:8085/proposal/ui) 
 
 
 
