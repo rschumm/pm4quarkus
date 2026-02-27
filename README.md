@@ -57,7 +57,9 @@ pressing
 
 Note: Quarkus will run Tests continously - Saving a File will trigger the Tests to run again and immediately show the results in the Console and the DevUI: 
 
-On localhost, the Main View is served on [the Endpoint `/proposal/ui`](http://localhost:8085/proposal/ui) 
+On localhost, the **Main View is served** on [the Endpoint `/proposal/ui`](http://localhost:8085/proposal/ui) 
+
+Aditionally, **OpenAPI / SwaggerUI** for the REST endpoints can be found in the DevUI. Interactive Test mode is active.   
 
 
 ![Quarkus DevUI](docu/q-dev.png)
