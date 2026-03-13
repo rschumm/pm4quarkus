@@ -129,6 +129,9 @@ ArgoCD can also visualise a simplifed Networking View:
 ![ArgoCD Network](docu/ar-nw.png)
 
 
+> [!IMPORTANT]  
+> To do so order a [ArgoCD Installation at InIT Cluster Lab Tools](https://github.zhaw.ch/InIT-PM4/wiki-pub/blob/main/README.md#order-access-to-argocd-and-sonarqube) and provide an PAT (personal AccessToken) for your Git Repo to Argo CD. 
+
 
 # Architecture Details
 
@@ -184,7 +187,7 @@ On localhost, the Main View is served on [the Endpoint `/proposal/ui`](http://lo
 
 
 
-# 🏗️ Quarkus Generated Documentation (for infroamtion)
+# 🏗️ Quarkus Generated Documentation (for information)
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
