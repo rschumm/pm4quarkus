@@ -86,5 +86,32 @@ jobs:
         docker build -f src/main/docker/Dockerfile.jvm -t ghcr.io/${{ github.repository }}/helloquarkus:latest .
         docker push ghcr.io/${{ github.repository }}/helloquarkus:latest
 
+  deploy:
+    runs-on: ubuntu-latest
+    needs: docker-build-and-push
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
 
+    steps:
+    - name: PM4 Checkout code
+      uses: actions/checkout@v4
 
+    - name: PM4 Install kubectl
+      uses: azure/setup-kubectl@v4
+
+    - name: PM4 Configure kubeconfig
+      run: |
+        mkdir -p ~/.kube
+        echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+        chmod 600 ~/.kube/config
+
+    - name: PM4 Deploy to Kubernetes
+      run: |
+        kubectl apply -f operations/Configs.yaml
+        kubectl apply -f operations/PostgreSQL.yaml
+        kubectl apply -f operations/Deployment.yaml
+
+    - name: PM4 Verify deployment
+      run: |
+        kubectl rollout status deployment/helloquarkus --timeout=120s
