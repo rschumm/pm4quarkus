@@ -11,10 +11,14 @@ spec:
     metadata:
       labels:
         app: helloquarkus
+      annotations:
+        ci/build-sha: "manual"
+        ci/redeploy-at: "1970-01-01T00:00:00Z"
     spec:
       containers:
       - name: helloquarkus
         image: ghcr.io/rschumm/pm4quarkus/helloquarkus:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         env:

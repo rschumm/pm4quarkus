@@ -1,5 +1,8 @@
 name: CI for Quarkus Proposals App 
 
+permissions:
+  contents: write
+
 on:
   # Uncomment the following lines to enable the workflow on push and pull request events for the main branch
   # push:
@@ -57,6 +60,9 @@ jobs:
     needs: build-and-test
 
     steps:
+    - name: PM4 Checkout code
+      uses: actions/checkout@v4
+
     - name: PM4 Download build artifacts
       uses: actions/download-artifact@v4
       with:
@@ -84,6 +90,28 @@ jobs:
       run: |
         docker build -f src/main/docker/Dockerfile.jvm -t ghcr.io/${{ github.repository }}/helloquarkus:latest .
         docker push ghcr.io/${{ github.repository }}/helloquarkus:latest
+
+    - name: PM4 Update deployment redeploy annotations
+      run: |
+        BUILD_SHA="${GITHUB_SHA}"
+        REDEPLOY_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+        sed -i "s|ci/build-sha: .*|ci/build-sha: \"${BUILD_SHA}\"|" operations/Deployment.yaml
+        sed -i "s|ci/redeploy-at: .*|ci/redeploy-at: \"${REDEPLOY_AT}\"|" operations/Deployment.yaml
+
+    - name: PM4 Commit deployment metadata for ArgoCD
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "scmy@zhaw.ch"
+
+        git add operations/Deployment.yaml
+        if git diff --cached --quiet; then
+          echo "No deployment metadata changes to commit"
+          exit 0
+        fi
+
+        git commit -m "ci: update redeploy metadata for ${GITHUB_SHA::7}"
+        git push origin HEAD:${GITHUB_REF_NAME}
 
 
 
