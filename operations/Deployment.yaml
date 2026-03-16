@@ -12,8 +12,8 @@ spec:
       labels:
         app: helloquarkus
       annotations:
-        ci/build-sha: "manual"
-        ci/redeploy-at: "1970-01-01T00:00:00Z"
+        ci/build-sha: "14feff29977fc83c7696f3690889ee24a2a79ef5"
+        ci/redeploy-at: "2026-03-16T12:20:27Z"
     spec:
       containers:
       - name: helloquarkus
