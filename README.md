@@ -128,6 +128,15 @@ Additionally, the Application can be deployed to the Rancher / k3s Cluster autom
 For this, ArgoCD will watch the GitHub Repository and apply the Kubernetes Resources in the `operations` folder automatically to the Cluster.   
 Ask the Teaching Assistant for ArgoCD Access.  
 
+> [!NOTE]
+> Usually, ArgoCD whatches changes on the k8s Artefact - like Versions etc. As here, for simplicity, we always deploy `:latest`, ArgoCD will do nothing when we build a new version. Thus, as small häck is used: a last step in the Build Pipeline adds some metadata that changes, and will trigger a re-deploy in ArgoCD. For Demo Purpose, these Metadata can also be edited by hand. For this demo setup the build-pipeline must be triggered by hand. Sample Metadata: 
+
+```yaml 
+      annotations:
+        ci/build-sha: "14feff29977fc83c7696f3690889ee24a2a79ef5"
+        ci/redeploy-at: "2026-03-16T12:20:27Z"
+```
+
 The monitored Appliation in ArgoCD will look like this:
 
 ![ArgoCD Tree](docu/ar-tree.png)
@@ -164,6 +173,11 @@ PROD:
 
 Production DB can be configured «normally» as described above.  
 In Production, the Database is provided by the Kubernetes Cluster in «normal» way in a Pod. See the folder `operations`. 
+
+
+> [!TIP]  
+> the Prod DB can be accessed in the PostgreSQL Pod using `psql -U pm4 -d pm4`  
+
 
 ### Panaché Persistence 
 
