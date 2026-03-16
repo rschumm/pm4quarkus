@@ -1,10 +1,11 @@
 name: CI for Quarkus Proposals App 
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  # Uncomment the following lines to enable the workflow on push and pull request events for the main branch
+  # push:
+  #   branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -76,6 +77,7 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
+        # this is a personal access token with read:packages and write:packages permissions, stored as a secret in the repository settings
         password: ${{ secrets.PM4_REGISTRY }}
 
     - name: PM4 Build and push Docker image

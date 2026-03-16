@@ -90,7 +90,15 @@ The Docker Image in the GitHub Container Registry:
 > This only works in the pulblic GitHub. ZHAW GitHub will not support GHCR.
 
 
+
 ![GitHub Container Registry](docu/gh-cr.png)
+
+> [!IMPORTANT]
+> To deploy to GH Registry: 
+> - get a PAT here: https://github.com/settings/tokens 
+> - and place it as a Repositor Secret here: https://github.com/rschumm/pm4quarkus/settings/secrets/actions  
+> - make the Container Package Public 
+
 
 
 ## deploy PROD on cluster
